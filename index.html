@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cantina Express</title>
+  <title>Cantina Bertolaccini</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
@@ -13,10 +13,9 @@
   <div class="app-shell">
     <section class="auth-view" id="auth-view">
       <div class="auth-hero">
-        <p class="eyebrow">Cantina digital</p>
+        <p class="eyebrow">Cantina Bertolaccini</p>
         <h1>Cantina Bertolaccini</h1>
-        <div class="hero-points">
-        </div>
+        <p>Sistema interno para operacao da cantina, atendimento e controle diario.</p>
       </div>
 
       <div class="auth-card">
@@ -35,6 +34,8 @@
             <input type="password" id="login-password" placeholder="Digite sua senha">
           </label>
           <button class="btn btn--primary btn--block form-grid__full" type="submit">Entrar</button>
+          <p class="hint form-grid__full">Acesso inicial admin: <strong>admin@cantina.com</strong> / <strong>123456</strong></p>
+          <p class="hint form-grid__full">Acesso inicial funcionaria: <strong>funcionaria@cantina.com</strong> / <strong>123456</strong></p>
         </form>
 
         <form class="form-grid auth-form is-hidden" id="register-form">
@@ -63,7 +64,7 @@
             <button class="btn btn--ghost" type="button" id="google-auth-button">Continuar com Google</button>
             <button class="btn btn--ghost" type="button" id="icloud-auth-button">Continuar com iCloud</button>
           </div>
-          
+          <p class="hint form-grid__full">Integracoes sociais preparadas no layout. A ativacao real depende de backend e chaves OAuth.</p>
         </form>
 
         <p class="status-message" id="auth-message"></p>
@@ -78,7 +79,6 @@
           <p class="topbar__subtitle" id="welcome-subtitle"></p>
         </div>
         <div class="topbar__actions">
-          <span class="version-chip">v2.1</span>
           <span class="role-chip" id="role-chip"></span>
           <button class="btn btn--ghost" id="logout-button" type="button">Sair</button>
         </div>
