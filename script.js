@@ -1008,6 +1008,8 @@ function deleteProduct(productId) {
 
 function buildOrderCard(order) {
   const fragment = templates.orderItem.content.cloneNode(true);
+  const currentUser = getCurrentUser();
+  const card = fragment.querySelector(".order-card");
   fragment.querySelector("h3").textContent = `${order.customerName} • ${paymentLabel(order.paymentMethod)}`;
   fragment.querySelector(".order-card__meta").textContent = formatDateTime(order.createdAt);
   fragment.querySelector(".order-card__total").textContent = formatCurrency(order.total);
@@ -1016,6 +1018,14 @@ function buildOrderCard(order) {
   const badge = fragment.querySelector(".order-card__badge");
   badge.textContent = paymentStatusLabel(order.paymentStatus);
   badge.className = `badge order-card__badge ${paymentStatusBadge(order.paymentStatus)}`;
+  if (currentUser?.role === "admin" && order.paymentStatus === "pending") {
+    const actions = document.createElement("div");
+    actions.className = "form-actions";
+    actions.innerHTML = `<button class="btn btn--primary" type="button" data-approve="${order.id}">Aprovar</button><button class="btn btn--danger" type="button" data-reject="${order.id}">Rejeitar</button>`;
+    actions.querySelector("[data-approve]").addEventListener("click", () => approvePayment(order.id));
+    actions.querySelector("[data-reject]").addEventListener("click", () => rejectPayment(order.id));
+    card.appendChild(actions);
+  }
   return fragment;
 }
 
