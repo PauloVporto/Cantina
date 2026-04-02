@@ -40,7 +40,8 @@
             <input type="password" id="login-password" placeholder="Digite sua senha">
           </label>
           <button class="btn btn--primary btn--block form-grid__full" type="submit">Entrar</button>
-
+          <p class="hint form-grid__full">Acesso inicial admin: <strong>admin@cantina.com</strong> / <strong>123456</strong></p>
+          <p class="hint form-grid__full">Acesso inicial funcionaria: <strong>funcionaria@cantina.com</strong> / <strong>123456</strong></p>
         </form>
 
         <form class="form-grid auth-form is-hidden" id="register-form">
@@ -66,8 +67,18 @@
           </label>
           <button class="btn btn--primary btn--block form-grid__full" type="submit">Criar conta</button>
           <div class="social-auth form-grid__full">
-            <button class="btn btn--ghost" type="button" id="google-auth-button">Continuar com Google</button>
-            <button class="btn btn--ghost" type="button" id="icloud-auth-button">Continuar com iCloud</button>
+            <button class="btn btn--ghost btn--social" type="button" id="google-auth-button">
+              <span class="social-icon social-icon--google" aria-hidden="true">G</span>
+              <span>Continuar com Google</span>
+            </button>
+            <button class="btn btn--ghost btn--social" type="button" id="icloud-auth-button">
+              <span class="social-icon social-icon--icloud" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img" focusable="false">
+                  <path d="M17.5 18.5H7.2a4.7 4.7 0 1 1 .5-9.4A6 6 0 0 1 19 10.3a4.1 4.1 0 0 1-1.5 8.2Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span>Continuar com iCloud</span>
+            </button>
           </div>
           <p class="hint form-grid__full">Integracoes sociais preparadas no layout. A ativacao real depende de backend e chaves OAuth.</p>
         </form>
