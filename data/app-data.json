@@ -1,0 +1,41 @@
+{
+  "users": [
+    {
+      "id": "admin-seed",
+      "name": "Administrador",
+      "phone": "11999990000",
+      "email": "admin@cantina.com",
+      "password": "123456",
+      "role": "admin",
+      "monthlyEnabled": false
+    },
+    {
+      "id": "employee-seed",
+      "name": "Funcionaria",
+      "phone": "11988887777",
+      "email": "funcionaria@cantina.com",
+      "password": "123456",
+      "role": "employee",
+      "monthlyEnabled": false
+    }
+  ],
+  "products": [],
+  "orders": [],
+  "monthlyAccounts": [],
+  "cashClosings": [],
+  "stockMovements": [],
+  "settings": {
+    "pixKey": "",
+    "paymentMethods": {
+      "pix": true,
+      "card_app": true,
+      "card_store": true,
+      "monthly": true
+    },
+    "paymentGateways": {
+      "google": false,
+      "icloud": false,
+      "mercadoPago": false
+    }
+  }
+}

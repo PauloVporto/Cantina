@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cantina Express</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <section class="auth-view" id="auth-view">
+      <div class="auth-hero">
+        <p class="eyebrow">Cantina digital</p>
+        <h1>Cantina Express</h1>
+        <p>Gerencie pedidos, fiado mensal, devedores, formas de pagamento e produtos em um unico app.</p>
+        <div class="hero-points">
+          <span>Login com perfil</span>
+          <span>Painel do administrador</span>
+          <span>Conta mensal para clientes</span>
+          <span>Versao mobile v2.1</span>
+        </div>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab is-active" data-auth-tab="login" type="button">Entrar</button>
+          <button class="auth-tab" data-auth-tab="register" type="button">Criar usuario</button>
+        </div>
+
+        <form class="form-grid auth-form" id="login-form">
+          <label>
+            E-mail
+            <input type="email" id="login-email" placeholder="admin@cantina.com">
+          </label>
+          <label>
+            Senha
+            <input type="password" id="login-password" placeholder="Digite sua senha">
+          </label>
+          <button class="btn btn--primary btn--block form-grid__full" type="submit">Entrar</button>
+          <p class="hint form-grid__full">Acesso inicial admin: <strong>admin@cantina.com</strong> / <strong>123456</strong></p>
+          <p class="hint form-grid__full">Acesso inicial funcionaria: <strong>funcionaria@cantina.com</strong> / <strong>123456</strong></p>
+        </form>
+
+        <form class="form-grid auth-form is-hidden" id="register-form">
+          <label>
+            Nome completo
+            <input type="text" id="register-name" placeholder="Nome do usuario">
+          </label>
+          <label>
+            Telefone com DDD
+            <input type="tel" id="register-phone" placeholder="11999998888">
+          </label>
+          <label>
+            E-mail
+            <input type="email" id="register-email" placeholder="voce@exemplo.com">
+          </label>
+          <label>
+            Senha
+            <input type="password" id="register-password" placeholder="Crie uma senha">
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="register-monthly">
+            Habilitar conta mensal / fiado
+          </label>
+          <button class="btn btn--primary btn--block form-grid__full" type="submit">Criar conta</button>
+          <div class="social-auth form-grid__full">
+            <button class="btn btn--ghost" type="button" id="google-auth-button">Continuar com Google</button>
+            <button class="btn btn--ghost" type="button" id="icloud-auth-button">Continuar com iCloud</button>
+          </div>
+          <p class="hint form-grid__full">Integracoes sociais preparadas no layout. A ativacao real depende de backend e chaves OAuth.</p>
+        </form>
+
+        <p class="status-message" id="auth-message"></p>
+      </div>
+    </section>
+
+    <section class="app-view is-hidden" id="app-view">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Operacao da cantina</p>
+          <h2 id="welcome-title">Bem-vindo</h2>
+          <p class="topbar__subtitle" id="welcome-subtitle"></p>
+        </div>
+        <div class="topbar__actions">
+          <span class="version-chip">v2.1</span>
+          <span class="role-chip" id="role-chip"></span>
+          <button class="btn btn--ghost" id="logout-button" type="button">Sair</button>
+        </div>
+      </header>
+
+      <section class="admin-view is-hidden" id="admin-view">
+        <div class="stats-grid">
+          <article class="stat-card"><span id="admin-revenue">R$ 0,00</span><small>Valor ganho</small></article>
+          <article class="stat-card"><span id="admin-expenses">R$ 0,00</span><small>Saidas do mes</small></article>
+          <article class="stat-card"><span id="admin-open-debt">R$ 0,00</span><small>Valor em aberto</small></article>
+          <article class="stat-card"><span id="admin-overdue-count">0</span><small>Clientes em atraso</small></article>
+          <article class="stat-card"><span id="admin-orders-count">0</span><small>Pedidos registrados</small></article>
+        </div>
+
+        <main class="dashboard dashboard--admin">
+          <section class="panel panel--wide">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Balanco</p>
+                <h2>Entradas e saidas do mes</h2>
+              </div>
+            </div>
+            <canvas id="finance-chart" height="150"></canvas>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Pedido manual</p>
+                <h2>Lancar no sistema</h2>
+              </div>
+            </div>
+            <form class="form-grid" id="admin-order-form">
+              <label>
+                Nome do cliente
+                <input type="text" id="admin-order-customer" placeholder="Nome do cliente">
+              </label>
+              <label>
+                Total do pedido
+                <input type="number" id="admin-order-total" min="0" step="0.01" placeholder="0.00">
+              </label>
+              <label>
+                Meio de pagamento
+                <select id="admin-order-payment">
+                  <option value="pix">Pix</option>
+                  <option value="card_app">Cartao no app</option>
+                  <option value="card_store">Cartao presencial</option>
+                  <option value="monthly">Conta mensal</option>
+                </select>
+              </label>
+              <label>
+                Itens resumidos
+                <input type="text" id="admin-order-items" placeholder="2x coxinha, 1x cafe">
+              </label>
+              <label class="form-grid__full">
+                Observacao
+                <input type="text" id="admin-order-note" placeholder="Detalhes do pedido">
+              </label>
+              <div class="form-actions form-grid__full">
+                <button class="btn btn--primary" type="submit">Lancar pedido</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Produtos</p>
+                <h2>Cadastro e edicao</h2>
+              </div>
+            </div>
+
+            <form class="form-grid product-form" id="product-form">
+              <input type="hidden" id="product-id">
+              <label>
+                Nome do produto
+                <input type="text" id="product-name" placeholder="Ex.: Pastel de queijo">
+              </label>
+              <label>
+                Categoria
+                <input type="text" id="product-category" placeholder="Salgados, bebidas...">
+              </label>
+              <label>
+                Preco
+                <input type="number" id="product-price" step="0.01" min="0" placeholder="0.00">
+              </label>
+              <label>
+                Estoque
+                <input type="number" id="product-stock" min="0" placeholder="0">
+              </label>
+              <label class="form-grid__full">
+                Descricao
+                <input type="text" id="product-description" placeholder="Descreva o item">
+              </label>
+              <label>
+                Imagem por URL
+                <input type="url" id="product-image-url" placeholder="https://...">
+              </label>
+              <label>
+                Ou enviar imagem
+                <input type="file" id="product-image-file" accept="image/*">
+              </label>
+              <div class="form-actions form-grid__full">
+                <button class="btn btn--primary" type="submit">Salvar produto</button>
+                <button class="btn btn--ghost" type="button" id="product-form-reset">Novo cadastro</button>
+              </div>
+            </form>
+
+            <div class="product-admin-list" id="admin-product-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Configuracoes</p>
+                <h2>Pagamentos da cantina</h2>
+              </div>
+            </div>
+
+            <form class="form-grid settings-form" id="settings-form">
+              <label class="form-grid__full">
+                Chave Pix do administrador
+                <input type="text" id="admin-pix-key" placeholder="cpf, e-mail, telefone ou chave aleatoria">
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="payment-pix-enabled">
+                Aceitar Pix
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="payment-card-enabled">
+                Aceitar Cartao
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="payment-monthly-enabled">
+                Aceitar conta mensal
+              </label>
+              <div class="form-actions form-grid__full">
+                <button class="btn btn--primary" type="submit">Salvar configuracoes</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Devedores</p>
+                <h2>Controle de fiado</h2>
+              </div>
+            </div>
+            <div class="debtors-list" id="debtors-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Estoque</p>
+                <h2>Visao rapida</h2>
+              </div>
+            </div>
+            <div class="stock-admin-list" id="stock-admin-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Pagamentos</p>
+                <h2>Aprovacoes pendentes</h2>
+              </div>
+            </div>
+            <div class="payments-list" id="pending-payments-list"></div>
+          </section>
+
+          <section class="panel panel--wide">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Historico</p>
+                <h2>Vendas recentes</h2>
+              </div>
+            </div>
+            <div class="orders-list" id="admin-orders-list"></div>
+          </section>
+        </main>
+      </section>
+
+      <section class="customer-view is-hidden" id="customer-view">
+        <div class="stats-grid">
+          <article class="stat-card"><span id="customer-monthly-total">R$ 0,00</span><small>Conta mensal</small></article>
+          <article class="stat-card"><span id="customer-due-date">-</span><small>Vencimento</small></article>
+          <article class="stat-card"><span id="customer-overdue-state">Em dia</span><small>Status</small></article>
+          <article class="stat-card"><span id="customer-orders-count">0</span><small>Meus pedidos</small></article>
+        </div>
+
+        <main class="dashboard">
+          <section class="panel panel--catalog">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Cardapio</p>
+                <h2>Escolha seus itens</h2>
+              </div>
+              <label class="search">
+                <span>Buscar</span>
+                <input type="search" id="search-input" placeholder="Ex.: coxinha, cafe...">
+              </label>
+            </div>
+            <div class="catalog" id="product-grid"></div>
+          </section>
+
+          <aside class="sidebar">
+            <section class="panel">
+              <div class="panel__header">
+                <div>
+                  <p class="eyebrow">Pedido</p>
+                  <h2>Finalizar compra</h2>
+                </div>
+                <button class="btn btn--text" id="clear-cart-button" type="button">Limpar</button>
+              </div>
+
+              <form class="form-grid" id="order-form">
+                <label class="form-grid__full">
+                  Observacao
+                  <input type="text" id="order-note" placeholder="Sem gelo, entregar na sala...">
+                </label>
+                <fieldset class="payment-methods form-grid__full">
+                  <legend>Meio de pagamento</legend>
+                  <div id="payment-method-options"></div>
+                </fieldset>
+              </form>
+
+              <div class="payment-info is-hidden" id="payment-info"></div>
+
+              <div class="cart-list" id="cart-list"></div>
+              <div class="totals">
+                <div><span>Subtotal</span><strong id="subtotal-value">R$ 0,00</strong></div>
+                <div><span>Total</span><strong id="total-value">R$ 0,00</strong></div>
+              </div>
+
+              <button class="btn btn--primary btn--block" id="finish-order-button" type="button">Finalizar pedido</button>
+            </section>
+
+            <section class="panel">
+              <div class="panel__header">
+                <div>
+                  <p class="eyebrow">Minha conta</p>
+                  <h2>Resumo mensal</h2>
+                </div>
+              </div>
+              <div class="account-summary" id="account-summary"></div>
+            </section>
+          </aside>
+
+          <section class="panel panel--wide">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Historico</p>
+                <h2>Meus pedidos</h2>
+              </div>
+            </div>
+            <div class="orders-list" id="customer-orders-list"></div>
+          </section>
+        </main>
+      </section>
+
+      <section class="employee-view is-hidden" id="employee-view">
+        <div class="stats-grid">
+          <article class="stat-card"><span id="employee-cash-total">R$ 0,00</span><small>Caixa do dia</small></article>
+          <article class="stat-card"><span id="employee-stock-events">0</span><small>Lancamentos de estoque</small></article>
+          <article class="stat-card"><span id="employee-last-close">-</span><small>Ultimo fechamento</small></article>
+          <article class="stat-card"><span id="employee-pending-count">0</span><small>Pagamentos pendentes</small></article>
+        </div>
+
+        <main class="dashboard">
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Caixa</p>
+                <h2>Fechamento do dia</h2>
+              </div>
+            </div>
+            <form class="form-grid" id="cash-form">
+              <label>
+                Valor em caixa
+                <input type="number" id="cash-amount" min="0" step="0.01" placeholder="0.00">
+              </label>
+              <label>
+                Saidas do dia
+                <input type="number" id="cash-expense" min="0" step="0.01" placeholder="0.00">
+              </label>
+              <label class="form-grid__full">
+                Observacao
+                <input type="text" id="cash-note" placeholder="Resumo do turno">
+              </label>
+              <div class="form-actions form-grid__full">
+                <button class="btn btn--primary" type="submit">Lancar caixa</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Estoque</p>
+                <h2>Movimentacao</h2>
+              </div>
+            </div>
+            <form class="form-grid" id="stock-move-form">
+              <label>
+                Produto
+                <select id="stock-move-product"></select>
+              </label>
+              <label>
+                Ajuste
+                <input type="number" id="stock-move-quantity" step="1" placeholder="-2 ou 10">
+              </label>
+              <label class="form-grid__full">
+                Motivo
+                <input type="text" id="stock-move-note" placeholder="Reposicao, perda, venda externa...">
+              </label>
+              <div class="form-actions form-grid__full">
+                <button class="btn btn--primary" type="submit">Lancar estoque</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel panel--wide">
+            <div class="panel__header">
+              <div>
+                <p class="eyebrow">Registros</p>
+                <h2>Ultimos lancamentos</h2>
+              </div>
+            </div>
+            <div class="orders-list" id="employee-log-list"></div>
+          </section>
+        </main>
+      </section>
+    </section>
+  </div>
+
+  <template id="product-card-template">
+    <article class="product-card">
+      <img class="product-card__image" alt="">
+      <div>
+        <span class="product-card__category"></span>
+        <h3></h3>
+        <p></p>
+        <div class="product-card__footer">
+          <div>
+            <strong class="product-card__price"></strong>
+            <small class="product-card__stock"></small>
+          </div>
+          <button class="btn btn--small" type="button">Adicionar</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <template id="cart-item-template">
+    <article class="cart-item">
+      <div>
+        <h3></h3>
+        <p></p>
+      </div>
+      <div class="cart-item__controls">
+        <button class="qty-button qty-button--minus" type="button">-</button>
+        <span class="cart-item__qty"></span>
+        <button class="qty-button qty-button--plus" type="button">+</button>
+      </div>
+    </article>
+  </template>
+
+  <template id="order-item-template">
+    <article class="order-card">
+      <div class="order-card__top">
+        <div>
+          <h3></h3>
+          <p class="order-card__meta"></p>
+        </div>
+        <strong class="order-card__total"></strong>
+      </div>
+      <p class="order-card__items"></p>
+      <p class="order-card__note"></p>
+      <span class="badge order-card__badge"></span>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>

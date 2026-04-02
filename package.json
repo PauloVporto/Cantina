@@ -1,0 +1,11 @@
+{
+  "name": "cantina-express",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App de cantina com frontend web e backend Node local",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check server.js && node --check script.js"
+  }
+}
